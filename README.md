@@ -1,16 +1,14 @@
-# ALX Travel App (alx_travel_app)
+# ALX Travel App (alx_travel_app_0x00)
 
-This is the backend service for the ALX Travel App, a platform for travel listings. This repository contains the foundational setup (Milestone 1) for the project, built with Django and Django REST Framework.
+This is the backend service for the ALX Travel App. This repository contains **Milestone 2**, which focuses on building the core database structure and populating it with test data.
 
-## 📍 Milestone 1: Setup and Database
+## 📍 Milestone 2: Database Modeling & Seeding
 
-This initial milestone includes:
-* **Django Project**: A production-ready project structure with a `listings` app.
-* **Database**: Configured to connect to a **MySQL** database.
-* **Secure Configuration**: Uses `django-environ` to manage all secret keys and settings via a `.env` file.
-* **API Documentation**: Automatic API docs generation at `/swagger/` using `drf-yasg`.
-* **CORS**: `django-cors-headers` is installed and configured to allow cross-origin requests.
-* **Async Tasks**: `Celery` is installed, ready for future background task configuration.
+This milestone builds on the first by adding:
+
+* **Database Models**: `Listing`, `Booking`, and `Review` models created in `listings/models.py`.
+* **Serializers**: `ModelSerializers` for `Listing`, `Booking`, and `Review` to translate data to/from JSON.
+* **Data Seeding**: A custom management command (`seed.py`) using `Faker` to populate the database with realistic test data.
 
 ---
 
@@ -28,26 +26,22 @@ Before you begin, ensure you have the following installed on your system:
 **Important:** You must manually create an empty database in MySQL *before* running the application.
 ```sql
 -- Example command in your MySQL shell:
-CREATE DATABASE alx_travel_db;
+CREATE DATABASE your_database_name;
 2. Installation
 Clone the repository:
 
 Bash
 
-git clone <your-repository-url>
-cd alx_travel_app
+git clone https://github.com/diaamohammad/alx_travel_app_0x00.git
+cd alx_travel_app_0x00
 Create and activate a virtual environment:
 
 Bash
 
-# For macOS/Linux
-python3 -m venv venv
-source venv/bin/activate
-
 # For Windows
 python -m venv venv
 .\venv\Scripts\activate
-Install the dependencies:
+Install the dependencies: (This now includes faker)
 
 Bash
 
@@ -57,7 +51,9 @@ This project uses a .env file to manage all environment variables.
 
 Create a file named .env in the project root (next to manage.py).
 
-Copy the contents of the template below into your new .env file and fill in your values.
+Copy the contents of the template below into your new .env file.
+
+Important: You must replace the placeholder values (like your_database_name, your_db_user, etc.) with your actual MySQL credentials.
 
 .env Template:
 
@@ -73,30 +69,27 @@ DEBUG=True
 # ===================================
 # Database Settings (MySQL)
 # ===================================
-# (This MUST match the database you created in MySQL)
-DB_NAME=alx_travel_db
-DB_USER=root
-DB_PASSWORD=your_actual_password
+# (Replace these with your own database credentials)
+DB_NAME=your_database_name
+DB_USER=your_db_user
+DB_PASSWORD=your_db_password
 DB_HOST=127.0.0.1
 DB_PORT=3306
 4. Running the Application
-Apply the database migrations: This will create the default Django tables (like auth, admin, etc.) in your MySQL database.
+Apply the database migrations: This will create the new Listing, Booking, and Review tables in your database.
 
 Bash
 
+python manage.py makemigrations listing
 python manage.py migrate
+Seed the database (Optional but Recommended): This will run the seed.py command to populate your new tables with fake data for testing.
+
+Bash
+
+python manage.py seed
 Run the development server:
 
 Bash
 
 python manage.py runserver
 The server will be running at http://127.0.0.1:8000/
-
-📚 API Documentation (Swagger)
-Once the server is running, you can view the live, auto-generated API documentation in your browser.
-
-Swagger UI: http://127.0.0.1:8000/swagger/
-
-ReDoc: http://127.0.0.1:8000/redoc/
-
-(Currently, the documentation will only show basic endpoints until API Views are added to the listings app.)
